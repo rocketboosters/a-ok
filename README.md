@@ -1,12 +1,12 @@
 # A-OK
 
-[![PyPI version](https://badge.fury.io/py/okay.svg)](https://pypi.org/project/okay/)
-[![build status](https://gitlab.com/rocket-boosters/okay/badges/main/pipeline.svg)](https://gitlab.com/rocket-boosters/okay/commits/main)
-[![coverage report](https://gitlab.com/rocket-boosters/okay/badges/main/coverage.svg)](https://gitlab.com/rocket-boosters/okay/commits/main)
+[![PyPI version](https://badge.fury.io/py/aok.svg)](https://pypi.org/project/aok/)
+[![build status](https://gitlab.com/rocket-boosters/aok/badges/main/pipeline.svg)](https://gitlab.com/rocket-boosters/aok/commits/main)
+[![coverage report](https://gitlab.com/rocket-boosters/aok/badges/main/coverage.svg)](https://gitlab.com/rocket-boosters/aok/commits/main)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Code style: flake8](https://img.shields.io/badge/code%20style-flake8-white)](https://gitlab.com/pycqa/flake8)
 [![Code style: mypy](https://img.shields.io/badge/code%20style-mypy-white)](http://mypy-lang.org/)
-[![PyPI - License](https://img.shields.io/pypi/l/okay)](https://pypi.org/project/okay/)
+[![PyPI - License](https://img.shields.io/pypi/l/aok)](https://pypi.org/project/aok/)
 
 *aok* is a library for simplifying the assertions of complex dictionary returns,
 which can be used within Python code or loaded via YAML files.
