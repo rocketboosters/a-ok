@@ -27,7 +27,7 @@ pytest-py38:
   stage: check
   script:
     - pip install poetry
-    - poetry install -E shell
+    - poetry install
     - >
       poetry run
       py.test
@@ -47,7 +47,7 @@ pytest-py39:
   coverage: '/^TOTAL.*\s+\d+\s+\d+\s+(\d+)%/'
   script:
     - pip install poetry
-    - poetry install -E shell
+    - poetry install
     - >
       poetry run
       py.test
