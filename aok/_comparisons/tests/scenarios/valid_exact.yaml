@@ -1,0 +1,28 @@
+subset: false
+
+observed:
+  foo: spam is good.
+  bar: 42
+  baz: false
+  a: 12
+  b: 12
+  c: 12
+  d: 12
+  deeper:
+    a: 1
+    b: foo
+
+comparator: !aok
+  foo: !aok.match 'spam.+\.'
+  bar: !aok.between [40, 43]
+  baz: !aok.not_null
+  a: !aok.greater 10
+  b: !aok.greater_or_equal 12
+  c: !aok.less 13
+  d: !aok.less_or_equal 12
+  deeper:
+    a: 1
+    b: !aok.like fo*
+
+expected:
+  success: true

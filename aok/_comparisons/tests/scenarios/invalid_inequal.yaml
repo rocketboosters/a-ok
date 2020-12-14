@@ -1,0 +1,12 @@
+subset: false
+
+observed:
+  foo: false
+
+comparator: !aok
+  foo: true
+
+expected:
+  success: false
+  failed_keys:
+  - foo
