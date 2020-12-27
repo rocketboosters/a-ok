@@ -109,6 +109,53 @@ class Between(_definitions.Comparator):
         return cls(value)
 
 
+class OneOf(_definitions.Comparator):
+    """Allows a matching comparison between any of the listed values."""
+
+    def _compare(
+        self,
+        observed: typing.Any,
+        subset: bool = False,
+    ) -> typing.Union[_definitions.Comparison, bool]:
+        """Greater than or equal will be true."""
+        failures: typing.Dict[str, _definitions.Comparison] = {}
+        for index, option in enumerate(self.value["options"]):
+            if isinstance(option, _definitions.Comparator):
+                comparator = option
+            else:
+                comparator = Equals(option)
+
+            result = comparator.compare(observed, subset=subset)
+            if getattr(result, "success", result):
+                return result
+
+            if isinstance(result, _definitions.Comparison):
+                failures[str(index)] = result
+            else:
+                failures[str(index)] = _definitions.Comparison(
+                    operation=comparator.operation_name(),
+                    success=False,
+                    expected=comparator.value,
+                    observed=observed,
+                )
+
+        return _definitions.Comparison(
+            operation="one_of",
+            success=False,
+            expected=", ".join([f"({i}) {f.expected}" for i, f in failures.items()]),
+            observed=observed,
+        )
+
+    @classmethod
+    def construct(cls, options: typing.List[typing.Any]) -> "OneOf":
+        return cls({"options": options})
+
+    @classmethod
+    def _from_yaml(cls, loader: yaml.Loader, node: yaml.Node) -> "OneOf":
+        options = loader.construct_sequence(node, deep=True)
+        return cls({"options": options})
+
+
 Anything.register()
 anything = getattr(Anything, "constructor", Anything)
 
@@ -130,6 +177,9 @@ less = getattr(Less, "constructor", Less)
 LessOrEqual.register()
 less_or_equal = getattr(LessOrEqual, "constructor", LessOrEqual)
 
+OneOf.register()
+one_of = getattr(OneOf, "constructor", OneOf)
+
 __all__ = [
     "Anything",
     "anything",
@@ -145,4 +195,6 @@ __all__ = [
     "less",
     "LessOrEqual",
     "less_or_equal",
+    "OneOf",
+    "one_of",
 ]

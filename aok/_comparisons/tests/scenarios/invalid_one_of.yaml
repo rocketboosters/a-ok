@@ -1,0 +1,15 @@
+subset: false
+
+observed:
+  foo: baboon
+
+comparator: !aok
+  foo: !aok.one_of
+  - foo
+  - bar
+  - !aok.like zz*
+
+expected:
+  success: false
+  failed_keys:
+  - foo

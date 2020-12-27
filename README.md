@@ -93,3 +93,6 @@ The available comparators are:
   pattern.
 - `aok.not_null(value)` must not be null/None, but can be anything else.
 - `aok.optional(value)` must equal the specified value or be null/None.
+- `aok.one_of(value)` must match one of the values in the specified list. Any of the
+  list items can also be a comparator.
+

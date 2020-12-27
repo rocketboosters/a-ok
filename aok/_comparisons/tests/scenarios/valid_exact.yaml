@@ -11,6 +11,7 @@ observed:
   deeper:
     a: 1
     b: foo
+  spam: baboon
 
 comparator: !aok
   foo: !aok.match 'spam.+\.'
@@ -23,6 +24,9 @@ comparator: !aok
   deeper:
     a: 1
     b: !aok.like fo*
+  spam: !aok.one_of
+  - bab
+  - !aok.like bab*
 
 expected:
   success: true
