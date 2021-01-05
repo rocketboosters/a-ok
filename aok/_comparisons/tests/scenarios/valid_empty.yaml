@@ -1,0 +1,8 @@
+subset: false
+
+observed: {}
+
+comparator: !aok
+
+expected:
+  success: true

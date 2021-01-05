@@ -3,6 +3,7 @@ import textwrap
 import typing
 
 import yaml
+import yaml.constructor
 
 import aok
 from aok import _definitions
@@ -63,7 +64,12 @@ class Okay(Dict):
     @classmethod
     def _from_yaml(cls, loader: yaml.Loader, node: yaml.Node) -> "Okay":
         """Loads the dict from a yaml parser."""
-        return cls(value=loader.construct_mapping(node, deep=True))
+        try:
+            return cls(value=loader.construct_mapping(node, deep=True))
+        except yaml.constructor.ConstructorError:
+            if node.value == "":
+                return cls(value={})
+            raise
 
     @classmethod
     def register(cls):
