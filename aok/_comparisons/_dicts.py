@@ -25,7 +25,7 @@ class Dict(_definitions.Comparator):
 
         keys = set(list(value.keys()))
         if not subset:
-            keys.update(set(list(observed.keys())))
+            keys.update(set(list(other.keys())))
 
         results: typing.Dict[typing.Any, _definitions.Comparison] = {
             key: aok.to_comparator(self.value.get(key)).compare(other.get(key), subset)
@@ -50,7 +50,7 @@ class Okay(Dict):
         heading = message or "One or more subset differences were found"
         assert result.success, "{}\n{}".format(
             heading,
-            textwrap.indent(yaml.safe_dump(result.to_diff_info()), "  "),
+            textwrap.indent(result.to_diff_info() or "", "  "),
         )
 
     def assert_all(self, observed: ArbitraryDict, message: str = None):
@@ -58,7 +58,7 @@ class Okay(Dict):
         heading = message or "One or more exact differences were found"
         assert result.success, "{}\n{}".format(
             heading,
-            textwrap.indent(yaml.safe_dump(result.to_diff_info()), "  "),
+            textwrap.indent(result.to_diff_info() or "", "  "),
         )
 
     @classmethod

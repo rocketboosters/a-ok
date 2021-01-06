@@ -1,0 +1,9 @@
+observed:
+  hello: world
+  foo: [1, 2, 3]
+
+expected: !aok
+  hello: !aok.like wo*
+  foo: [1, 2]
+  bar:
+    baz: false

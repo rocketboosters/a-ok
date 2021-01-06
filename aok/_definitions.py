@@ -1,7 +1,9 @@
 import dataclasses
+import pprint
 import typing
 
 import yaml
+import yaml.constructor
 
 from aok import _utils
 
@@ -91,26 +93,37 @@ class Comparison:
     )
     error: typing.Optional[Exception] = None
 
-    def to_diff_info(
-        self,
-    ) -> typing.Optional[typing.Union[str, typing.Dict[str, typing.Any]]]:
-        """Creates a formatted display message for use in assertions."""
+    def to_diff_data(self) -> typing.Optional[typing.Dict[str, typing.Any]]:
         if self.success:
             return None
 
         if self.children:
             return {
-                key: comparison.to_diff_info()
+                key: comparison.to_diff_data()
                 for key, comparison in self.children.items()
                 if not comparison.success
             }
 
-        return "{operation}({expected}, {observed}){error}".format(
-            operation=self.operation,
-            expected=self.expected,
-            observed=self.observed,
-            error=f" [ERROR] {self.error}" if self.error else "",
-        )
+        output = {
+            "OPERATION": self.operation,
+            "EXPECTED": self.expected,
+            "OBSERVED": self.observed,
+        }
+        if self.error:
+            output["error"] = str(self.error)
+
+        return output
+
+    def to_diff_info(self) -> typing.Optional[str]:
+        """Creates a formatted display message for use in assertions."""
+        if self.success:
+            return None
+
+        difference = self.to_diff_data()
+        try:
+            return yaml.dump(difference)
+        except yaml.constructor.ConstructorError:
+            return pprint.pformat(difference, indent=2)
 
     def failed_keys(self) -> typing.Set[str]:
         """Lists failed absolute keys."""
