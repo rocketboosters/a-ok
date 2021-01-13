@@ -1,0 +1,19 @@
+subset: true
+
+observed:
+  foo: spam is good.
+  bar: 42
+  baz:
+  - true
+  - spam: 3.14
+    ham: hello world
+
+comparator: !aok
+  foo: !aok.match 'spam.+\.'
+  bar: !aok.between {min: 41, max: 42}
+  baz:
+  - true
+  - spam: !aok.greater 3
+
+expected:
+  success: true

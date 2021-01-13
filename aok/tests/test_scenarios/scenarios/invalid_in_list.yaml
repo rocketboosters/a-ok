@@ -1,0 +1,19 @@
+subset: true
+
+observed:
+  my_list:
+  - true
+  - spam: 3.14
+    ham: hello world
+
+comparator: !aok
+  my_list:
+  - not a match
+  - spam: !aok.greater 3
+    ham: goodbye moon
+
+expected:
+  success: false
+  failed_keys:
+  - my_list.index_0
+  - my_list.index_1.ham

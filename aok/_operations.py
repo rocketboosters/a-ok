@@ -13,6 +13,10 @@ def to_comparator(value: typing.Any) -> "_definitions.Comparator":
         return value
     elif isinstance(value, dict):
         return _comparisons.Dict(value)
+    elif isinstance(value, list):
+        return _comparisons.List(value)
+    elif isinstance(value, tuple):
+        return _comparisons.Tuple(value)
 
     return _comparisons.Equals(value)
 
