@@ -1,4 +1,3 @@
-import dataclasses
 import json
 import textwrap
 import typing
@@ -50,7 +49,6 @@ def _compare_list(
     )
 
 
-@dataclasses.dataclass()
 class List(_definitions.Comparator):
     """Container class for list comparisons, which compare the lists element-wise."""
 
@@ -66,7 +64,6 @@ class List(_definitions.Comparator):
         )
 
 
-@dataclasses.dataclass()
 class JsonList(_definitions.Comparator):
     """List comparator for data stored as a JSON string."""
 
@@ -84,7 +81,7 @@ class JsonList(_definitions.Comparator):
             return _definitions.Comparison(
                 operation="json_dict",
                 success=False,
-                expected=json.dumps(self.value),
+                expected=self.value,
                 observed=observed,
                 error=error,
             )
@@ -106,7 +103,6 @@ class JsonList(_definitions.Comparator):
             raise
 
 
-@dataclasses.dataclass()
 class Tuple(_definitions.Comparator):
     """Container class for tuple comparisons, which compare the tuples element-wise."""
 
@@ -140,7 +136,6 @@ class Tuple(_definitions.Comparator):
         )
 
 
-@dataclasses.dataclass()
 class OkayList(List):
     """Root list object for comparison."""
 

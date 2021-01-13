@@ -1,4 +1,3 @@
-import dataclasses
 import pprint
 import typing
 
@@ -8,11 +7,11 @@ import yaml.constructor
 from aok import _utils
 
 
-@dataclasses.dataclass()
 class Comparator:
     """Okay style comparison class for comparing values."""
 
-    value: typing.Any
+    def __init__(self, value: typing.Any):
+        self.value = value
 
     @classmethod
     def operation_name(cls) -> str:
@@ -66,7 +65,7 @@ class Comparator:
     @classmethod
     def _from_yaml(cls, loader: yaml.Loader, node: yaml.Node) -> "Comparator":
         """Internal yaml node parsing. Defaults to a scalar value."""
-        value = loader.construct_scalar(node)
+        value = loader.construct_scalar(typing.cast(yaml.ScalarNode, node))
         return cls(value)
 
     @classmethod
@@ -80,18 +79,24 @@ class Comparator:
         yaml.add_constructor(f"!aok.{cls.operation_name()}", cls.parse_yaml)
 
 
-@dataclasses.dataclass()
 class Comparison:
     """Contains the results and information for an arbitrary comparison."""
 
-    operation: str
-    success: bool
-    expected: typing.Any
-    observed: typing.Any
-    children: typing.Dict[typing.Any, "Comparison"] = dataclasses.field(
-        default_factory=lambda: {},
-    )
-    error: typing.Optional[Exception] = None
+    def __init__(
+        self,
+        operation: str,
+        success: bool,
+        expected: typing.Any,
+        observed: typing.Any,
+        children: typing.Dict[typing.Any, "Comparison"] = None,
+        error: Exception = None,
+    ):
+        self.operation = operation
+        self.success = success
+        self.expected = expected
+        self.observed = observed
+        self.children = children or {}
+        self.error = error
 
     def to_diff_data(self) -> typing.Optional[typing.Dict[str, typing.Any]]:
         """Creates a data structure of differences for display."""

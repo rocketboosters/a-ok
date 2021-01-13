@@ -33,6 +33,9 @@ class Unequals(_definitions.Comparator):
 class Anything(_definitions.Comparator):
     """Allows anything for the given value."""
 
+    def __init__(self):
+        super(Anything, self).__init__(None)
+
     def _compare(
         self,
         observed: typing.Any,
@@ -42,8 +45,8 @@ class Anything(_definitions.Comparator):
         return True
 
     @classmethod
-    def from_yaml(cls, loader: yaml.Loader, node: yaml.Node) -> "Anything":
-        return cls(None)
+    def _from_yaml(cls, loader: yaml.Loader, node: yaml.Node) -> "Anything":
+        return cls()
 
 
 class Less(_definitions.Comparator):

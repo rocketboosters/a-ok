@@ -1,4 +1,3 @@
-import dataclasses
 import json
 import textwrap
 import typing
@@ -50,7 +49,6 @@ def _compare_dicts(
     )
 
 
-@dataclasses.dataclass()
 class Dict(_definitions.Comparator):
     """Main class in which aok assertions are made."""
 
@@ -66,7 +64,6 @@ class Dict(_definitions.Comparator):
         )
 
 
-@dataclasses.dataclass()
 class JsonDict(_definitions.Comparator):
     """Dictionary comparator for data stored as a JSON string."""
 
@@ -84,7 +81,7 @@ class JsonDict(_definitions.Comparator):
             return _definitions.Comparison(
                 operation="json_dict",
                 success=False,
-                expected=json.dumps(self.value),
+                expected=self.value,
                 observed=observed,
                 error=error,
             )
@@ -106,7 +103,6 @@ class JsonDict(_definitions.Comparator):
             raise
 
 
-@dataclasses.dataclass()
 class Okay(Dict):
     """Root dictionary object for comparison."""
 
