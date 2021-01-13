@@ -94,6 +94,7 @@ class Comparison:
     error: typing.Optional[Exception] = None
 
     def to_diff_data(self) -> typing.Optional[typing.Dict[str, typing.Any]]:
+        """Creates a data structure of differences for display."""
         if self.success:
             return None
 

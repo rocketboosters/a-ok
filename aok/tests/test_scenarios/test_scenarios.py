@@ -15,8 +15,9 @@ def test_scenario(filename: str):
     """Test the expected scenario against the executed aok validation."""
     path = directory.joinpath(filename)
     scenario = yaml.full_load(path.read_text())
-    comparator: aok.Okay = scenario["comparator"]
-    result = comparator.compare(
+
+    list_comparator: aok.OkayRoot = scenario["comparator"]
+    result = list_comparator.compare(
         scenario["observed"],
         subset=scenario.get("subset", False),
     )

@@ -76,11 +76,15 @@ def test_call():
     ok.assert_all(result)
 ```
 
+It is also possible to do a comparison on lists with `aok.OkayList` and the `!aok_list`
+class replacing the `aok.Okay` and `!aok` values like shown in the example above.
+
 The available comparators are:
 - `aok.anything()` will always succeed, no matter what the observed value is. 
 - `aok.between(min, max)` must be greater than or equal to min and less than or equal
   to the specified min and max values. This can be a numeric or string value.
 - `aok.equals(value)` must be an exact match between the values.
+- `aok.unequals(value)` must not be equal to the expected value.
 - `aok.greater(value)` must be greater than the specified value.
 - `aok.greater_or_equal(value)` must be greater than or equal to the specified value.
 - `aok.less(value)` must be less than the specified value.
@@ -94,5 +98,9 @@ The available comparators are:
 - `aok.not_null(value)` must not be null/None, but can be anything else.
 - `aok.optional(value)` must equal the specified value or be null/None.
 - `aok.one_of(value)` must match one of the values in the specified list. Any of the
-  list items can also be a comparator.
-
+- `aok.none_of(value)` must not match one of the values in the specified list. Any of
+  the list items can also be a comparator that will be negated.
+- `aok.json_dict(dict)` parses a JSON-serialized string attribute and compares it to
+  the dictionary/object in the same fashion as the `!aok` root object.
+- `aok.json_list(list)` parses a JSON-serislized string attribute nad compares it to
+  the list object in the same fashion as the `!aok_list` root object.

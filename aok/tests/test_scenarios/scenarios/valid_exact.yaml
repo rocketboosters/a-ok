@@ -12,6 +12,9 @@ observed:
     a: 1
     b: foo
   spam: baboon
+  spam_none: baboon
+  ham: '{"a": 12, "b": false}'
+  bam: '[1, 2, {"a": 12, "b": false}]'
 
 comparator: !aok
   foo: !aok.match 'spam.+\.'
@@ -27,6 +30,17 @@ comparator: !aok
   spam: !aok.one_of
   - bab
   - !aok.like bab*
+  spam_none: !aok.none_of
+  - bab
+  - monkey
+  - !aok.like baba*
+  ham: !aok.json_dict
+    a: 12
+    b: false
+  bam: !aok.json_list
+  - 1
+  - 2
+  - {a: 12, b: false}
 
 expected:
   success: true

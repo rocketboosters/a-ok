@@ -1,6 +1,6 @@
 import typing
 
-from aok import _comparisons
+from aok import comparisons
 from aok import _definitions
 
 
@@ -12,13 +12,13 @@ def to_comparator(value: typing.Any) -> "_definitions.Comparator":
     if isinstance(value, _definitions.Comparator):
         return value
     elif isinstance(value, dict):
-        return _comparisons.Dict(value)
+        return comparisons.Dict(value)
     elif isinstance(value, list):
-        return _comparisons.List(value)
+        return comparisons.List(value)
     elif isinstance(value, tuple):
-        return _comparisons.Tuple(value)
+        return comparisons.Tuple(value)
 
-    return _comparisons.Equals(value)
+    return comparisons.Equals(value)
 
 
 def cast_compatible(

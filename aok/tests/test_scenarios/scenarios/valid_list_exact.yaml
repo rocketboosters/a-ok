@@ -1,0 +1,16 @@
+subset: false
+
+observed:
+- 1
+- 2
+- {a: 12, b: false}
+- hello world
+
+comparator: !aok_list
+- 1
+- 2
+- {a: 12, b: false}
+- !aok.unequals goodbye moon
+
+expected:
+  success: true

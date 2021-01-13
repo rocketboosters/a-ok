@@ -18,6 +18,18 @@ class Equals(_definitions.Comparator):
         return _operations.cast_compatible(self.value, observed) == observed
 
 
+class Unequals(_definitions.Comparator):
+    """Compares two values as an inequality."""
+
+    def _compare(
+        self,
+        observed: typing.Any,
+        subset: bool = False,
+    ) -> typing.Union[_definitions.Comparison, bool]:
+        """Make an inequality comparison."""
+        return _operations.cast_compatible(self.value, observed) != observed
+
+
 class Anything(_definitions.Comparator):
     """Allows anything for the given value."""
 
@@ -117,7 +129,7 @@ class OneOf(_definitions.Comparator):
         observed: typing.Any,
         subset: bool = False,
     ) -> typing.Union[_definitions.Comparison, bool]:
-        """Greater than or equal will be true."""
+        """Succeeds if at least one of the options are equal."""
         failures: typing.Dict[str, _definitions.Comparison] = {}
         for index, option in enumerate(self.value["options"]):
             if isinstance(option, _definitions.Comparator):
@@ -156,6 +168,48 @@ class OneOf(_definitions.Comparator):
         return cls({"options": options})
 
 
+class NoneOf(_definitions.Comparator):
+    """Allows a mismatching comparison between none of the listed values."""
+
+    def _compare(
+        self,
+        observed: typing.Any,
+        subset: bool = False,
+    ) -> typing.Union[_definitions.Comparison, bool]:
+        """Succeeds if none of the options are equal."""
+        for index, option in enumerate(self.value["options"]):
+            if isinstance(option, _definitions.Comparator):
+                comparator = option
+            else:
+                comparator = Equals(option)
+
+            result = comparator.compare(observed, subset=subset)
+            if getattr(result, "success", False):
+                return _definitions.Comparison(
+                    operation=f"not {result.operation}",
+                    success=False,
+                    expected=result.expected,
+                    observed=result.observed,
+                    children=result.children,
+                )
+
+        return _definitions.Comparison(
+            operation="none_of",
+            success=True,
+            expected=self.value,
+            observed=observed,
+        )
+
+    @classmethod
+    def construct(cls, options: typing.List[typing.Any]) -> "NoneOf":
+        return cls({"options": options})
+
+    @classmethod
+    def _from_yaml(cls, loader: yaml.Loader, node: yaml.Node) -> "NoneOf":
+        options = loader.construct_sequence(node, deep=True)
+        return cls({"options": options})
+
+
 Anything.register()
 anything = getattr(Anything, "constructor", Anything)
 
@@ -164,6 +218,9 @@ between = getattr(Between, "constructor", Between)
 
 Equals.register()
 equals = getattr(Equals, "constructor", Equals)
+
+Unequals.register()
+unequals = getattr(Unequals, "constructor", Unequals)
 
 Greater.register()
 greater = getattr(Greater, "constructor", Greater)
@@ -177,24 +234,8 @@ less = getattr(Less, "constructor", Less)
 LessOrEqual.register()
 less_or_equal = getattr(LessOrEqual, "constructor", LessOrEqual)
 
+NoneOf.register()
+none_of = getattr(NoneOf, "constructor", NoneOf)
+
 OneOf.register()
 one_of = getattr(OneOf, "constructor", OneOf)
-
-__all__ = [
-    "Anything",
-    "anything",
-    "Between",
-    "between",
-    "Equals",
-    "equals",
-    "Greater",
-    "greater",
-    "GreaterOrEqual",
-    "greater_or_equal",
-    "Less",
-    "less",
-    "LessOrEqual",
-    "less_or_equal",
-    "OneOf",
-    "one_of",
-]

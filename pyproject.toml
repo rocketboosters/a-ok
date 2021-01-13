@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aok"
-version = "0.1.5"
+version = "0.2.0"
 description = "Complex dictionary comparisons to simplify testing."
 authors = ["Scott Ernst <swernst@gmail.com>"]
 license = "MIT"
