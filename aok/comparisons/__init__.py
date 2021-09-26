@@ -1,3 +1,4 @@
+"""Comparison operators subpackage for the aok library."""
 from aok.comparisons._basics import Anything  # noqa: F401
 from aok.comparisons._basics import Between  # noqa: F401
 from aok.comparisons._basics import Equals  # noqa: F401
@@ -23,6 +24,7 @@ from aok.comparisons._dicts import Okay  # noqa: F401
 from aok.comparisons._lists import JsonList  # noqa: F401
 from aok.comparisons._lists import List  # noqa: F401
 from aok.comparisons._lists import OkayList  # noqa: F401
+from aok.comparisons._lists import StrictList  # noqa: F401
 from aok.comparisons._lists import Tuple  # noqa: F401
 from aok.comparisons._lists import json_list  # noqa: F401
 from aok.comparisons._nullish import NotNull  # noqa: F401

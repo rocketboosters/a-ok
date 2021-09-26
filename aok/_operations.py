@@ -6,8 +6,9 @@ from aok import _definitions
 
 def to_comparator(value: typing.Any) -> "_definitions.Comparator":
     """
-    Converts the value to a default comparator if not already one. If the value
-    is already a comparator, it is returned unchanged.
+    Convert the value to a default comparator if not already one.
+
+    If the value is already a comparator, it is returned unchanged.
     """
     if isinstance(value, _definitions.Comparator):
         return value

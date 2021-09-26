@@ -3,7 +3,7 @@ import typing
 from aok import _definitions
 
 ArbitraryDict = typing.Dict[typing.Any, typing.Any]
-ArbitraryList = typing.List[typing.Any]
+ArbitraryList = typing.Union[typing.List[typing.Any], typing.Tuple[typing.Any, ...]]
 
 
 class OkayRoot(typing.Protocol):  # pragma: no cover
@@ -15,9 +15,11 @@ class OkayRoot(typing.Protocol):  # pragma: no cover
         message: str = None,
     ):
         """
-        Compares the observed object against the expected values in a recursive,
-        element-wise fashion and raises assertion errors for any deviation between
-        the elements of the expected configuration and the observed structure values.
+        Compare the observed object against the expected values.
+
+        This is carried out in a recursive, element-wise fashion and raises assertion
+        errors for any deviation between the elements of the expected configuration and
+        the observed structure values.
 
         In this subset mode, any extra keys/values found in dictionaries will be
         ignored and assumed to be insignificant. Use `assert_all` for exact matching.
@@ -36,9 +38,11 @@ class OkayRoot(typing.Protocol):  # pragma: no cover
         message: str = None,
     ):
         """
-        Compares the observed object against the expected values in a recursive,
-        element-wise fashion and raises assertion errors for any deviation between
-        the elements of the expected configuration and the observed structure values.
+        Compare the observed object against the expected values.
+
+        This is carried out in a recursive, element-wise fashion and raises assertion
+        errors for any deviation between the elements of the expected configuration and
+        the observed structure values.
 
         :param observed:
             Data structure to compare against the expected one.
@@ -54,9 +58,10 @@ class OkayRoot(typing.Protocol):  # pragma: no cover
         subset: bool = False,
     ) -> "_definitions.Comparison":
         """
-        Compares the observed object against the expected values in a recursive,
-        element-wise fashion and returns a comparison object that expresses the
-        results of the compare operation.
+        Compare the observed object against the expected values.
+
+        This is carried out in a recursive, element-wise fashion and returns a
+        comparison object that expresses the results of the compare operation.
 
         :param observed:
             Data structure to compare against the expected one.

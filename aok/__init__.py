@@ -1,3 +1,4 @@
+"""Complex dictionary comparisons to simplify testing."""
 import pathlib as _pathlib
 from importlib import metadata as _metadata
 
@@ -27,6 +28,7 @@ from aok.comparisons import Okay  # noqa: F401
 from aok.comparisons import OkayList  # noqa: F401
 from aok.comparisons import OneOf  # noqa: F401
 from aok.comparisons import Optional  # noqa: F401
+from aok.comparisons import StrictList  # noqa: F401
 from aok.comparisons import Tuple  # noqa: F401
 from aok.comparisons import Unequals  # noqa: F401
 from aok.comparisons import anything  # noqa: F401

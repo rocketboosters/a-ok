@@ -34,6 +34,7 @@ class Anything(_definitions.Comparator):
     """Allows anything for the given value."""
 
     def __init__(self):
+        """Create an Anything comparison operation."""
         super(Anything, self).__init__(None)
 
     def _compare(
@@ -112,6 +113,7 @@ class Between(_definitions.Comparator):
 
     @classmethod
     def construct(cls, minimum: typing.Any, maximum: typing.Any) -> "Between":
+        """Create a Between comparison operator with the specified options."""
         return cls({"min": minimum, "max": maximum})
 
     @classmethod
@@ -163,6 +165,7 @@ class OneOf(_definitions.Comparator):
 
     @classmethod
     def construct(cls, options: typing.List[typing.Any]) -> "OneOf":
+        """Create a OneOf comparison operator with the specified options."""
         return cls({"options": options})
 
     @classmethod
@@ -205,6 +208,7 @@ class NoneOf(_definitions.Comparator):
 
     @classmethod
     def construct(cls, options: typing.List[typing.Any]) -> "NoneOf":
+        """Create a NoneOf comparison operator with the specified options."""
         return cls({"options": options})
 
     @classmethod

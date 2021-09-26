@@ -15,7 +15,7 @@ def _compare_dicts(
     observed: typing.Any,
     subset: bool,
 ) -> "_definitions.Comparison":
-    """Compares dictionaries recursively and returns the results as a Comparison."""
+    """Compare dictionaries recursively and returns the results as a Comparison."""
     expected_value = expected or {}
     observed_value = observed or {}
 
@@ -57,6 +57,7 @@ class Dict(_definitions.Comparator):
         observed: "_types.ArbitraryDict",
         subset: bool = False,
     ) -> _definitions.Comparison:
+        """Compare the observed dictionary in a recursive fashion."""
         return _compare_dicts(
             expected=typing.cast(_types.ArbitraryDict, self.value or {}),
             observed=observed,
@@ -72,7 +73,7 @@ class JsonDict(_definitions.Comparator):
         observed: str,
         subset: bool = False,
     ) -> _definitions.Comparison:
-        """Parses and compares the observed value."""
+        """Parse and compare the observed value."""
         try:
             observed_parsed = json.loads(observed or "{}")
             if not isinstance(observed_parsed, dict):
@@ -94,7 +95,7 @@ class JsonDict(_definitions.Comparator):
 
     @classmethod
     def _from_yaml(cls, loader: yaml.Loader, node: yaml.Node) -> "JsonDict":
-        """Loads the dict from a yaml parser."""
+        """Load the dict from a yaml parser."""
         try:
             return cls(value=loader.construct_mapping(node, deep=True))
         except yaml.constructor.ConstructorError:
@@ -112,9 +113,11 @@ class Okay(Dict):
         message: str = None,
     ) -> None:
         """
-        Compares the observed object against the expected values in a recursive,
-        element-wise fashion and raises assertion errors for any deviation between
-        the elements of the expected configuration and the observed structure values.
+        Compare the observed object against the expected values.
+
+        This is carried out in a recursive, element-wise fashion and raises assertion
+        errors for any deviation between the elements of the expected configuration and
+        the observed structure values.
 
         In this subset mode, any extra keys/values found in dictionaries will be
         ignored and assumed to be insignificant. Use `assert_all` for exact matching.
@@ -138,9 +141,11 @@ class Okay(Dict):
         message: str = None,
     ) -> None:
         """
-        Compares the observed object against the expected values in a recursive,
-        element-wise fashion and raises assertion errors for any deviation between
-        the elements of the expected configuration and the observed structure values.
+        Compare the observed object against the expected values.
+
+        This is carried out in a recursive, element-wise fashion and raises assertion
+        errors for any deviation between the elements of the expected configuration and
+        the observed structure values.
 
         :param observed:
             Data structure to compare against the expected one.
@@ -157,7 +162,7 @@ class Okay(Dict):
 
     @classmethod
     def _from_yaml(cls, loader: yaml.Loader, node: yaml.Node) -> "Okay":
-        """Loads the dict from a yaml parser."""
+        """Load the dict from a yaml parser."""
         try:
             return cls(value=loader.construct_mapping(node, deep=True))
         except yaml.constructor.ConstructorError:
@@ -167,7 +172,7 @@ class Okay(Dict):
 
     @classmethod
     def register(cls):
-        """Overrides the registration in this case for base registration."""
+        """Override the registration in this case for base registration."""
         yaml.add_constructor("!aok", Okay.parse_yaml)
 
 

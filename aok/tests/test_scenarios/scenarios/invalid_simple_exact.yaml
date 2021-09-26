@@ -6,7 +6,7 @@ observed:
   baz: false
 
 comparator: !aok
-  foo: !aok.match 'spam.+\.'
+  foo: !aok.match spam.+\.
   bar: !aok.between [40, 43]
 
 expected:

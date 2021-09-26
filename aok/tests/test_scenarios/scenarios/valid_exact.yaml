@@ -17,7 +17,7 @@ observed:
   bam: '[1, 2, {"a": 12, "b": false}]'
 
 comparator: !aok
-  foo: !aok.match 'spam.+\.'
+  foo: !aok.match spam.+\.
   bar: !aok.between [40, 43]
   baz: !aok.not_null
   a: !aok.greater 10

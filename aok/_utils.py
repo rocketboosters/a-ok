@@ -2,7 +2,7 @@ import typing
 
 
 def to_snake_case(value: typing.Any) -> str:
-    """Converts the camelCase or PascalCase value into a snake_case value."""
+    """Convert the camelCase or PascalCase value into a snake_case value."""
     if value is None or value == "":
         return ""
 

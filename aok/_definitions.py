@@ -11,11 +11,12 @@ class Comparator:
     """Okay style comparison class for comparing values."""
 
     def __init__(self, value: typing.Any):
+        """Create a generic Comparator object."""
         self.value = value
 
     @classmethod
     def operation_name(cls) -> str:
-        """..."""
+        """Fetch the name of the operation defining the comparison operator."""
         return _utils.to_snake_case(cls.__name__)
 
     def _compare(
@@ -28,8 +29,7 @@ class Comparator:
 
     def compare(self, observed: typing.Any, subset: bool = False) -> "Comparison":
         """
-        Compares the observed value with the expected value set in this
-        comparator object.
+        Compare the observed value with the expected one set in this comparator object.
 
         :param observed:
             Value against which to make the comparison.
@@ -64,7 +64,7 @@ class Comparator:
 
     @classmethod
     def _from_yaml(cls, loader: yaml.Loader, node: yaml.Node) -> "Comparator":
-        """Internal yaml node parsing. Defaults to a scalar value."""
+        """Parse yaml node into object. Defaults to a scalar value."""
         value = loader.construct_scalar(typing.cast(yaml.ScalarNode, node))
         return cls(value)
 
@@ -75,7 +75,7 @@ class Comparator:
 
     @classmethod
     def register(cls):
-        """Registers the comparator with the PyYaml loader."""
+        """Register the comparator with the PyYaml loader."""
         yaml.add_constructor(f"!aok.{cls.operation_name()}", cls.parse_yaml)
 
 
@@ -91,6 +91,7 @@ class Comparison:
         children: typing.Dict[typing.Any, "Comparison"] = None,
         error: Exception = None,
     ):
+        """Create a comparison object defining the specified comparison to make."""
         self.operation = operation
         self.success = success
         self.expected = expected
@@ -99,7 +100,7 @@ class Comparison:
         self.error = error
 
     def to_diff_data(self) -> typing.Optional[typing.Dict[str, typing.Any]]:
-        """Creates a data structure of differences for display."""
+        """Create a data structure of differences for display."""
         if self.success:
             return None
 
@@ -121,7 +122,7 @@ class Comparison:
         return output
 
     def to_diff_info(self) -> typing.Optional[str]:
-        """Creates a formatted display message for use in assertions."""
+        """Create a formatted display message for use in assertions."""
         if self.success:
             return None
 
@@ -132,7 +133,7 @@ class Comparison:
             return pprint.pformat(difference, indent=2)
 
     def failed_keys(self) -> typing.Set[str]:
-        """Lists failed absolute keys."""
+        """List failed absolute keys."""
         if self.success or not self.children:
             return set()
 

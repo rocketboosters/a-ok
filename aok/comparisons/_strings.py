@@ -40,14 +40,14 @@ class LikeCase(_definitions.Comparator):
 
 
 class Match(_definitions.Comparator):
-    """Compares strings using the compiled regex."""
+    """Compare strings using the compiled regex."""
 
     def _compare(
         self,
         observed: typing.Any,
         subset: bool = False,
     ) -> typing.Union[_definitions.Comparison, bool]:
-        """Determines if the value matches the regular expression."""
+        """Determine if the value matches the regular expression."""
         pattern = re.compile(self.value["regex"], flags=self.value.get("flags", 0))
         return pattern.match(observed) is not None
 

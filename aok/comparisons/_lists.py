@@ -14,12 +14,13 @@ def _compare_list(
     expected: "_types.ArbitraryList",
     observed: typing.Any,
     subset: bool,
+    allowed_types: typing.Tuple[typing.Any, ...] = (list, tuple),
 ) -> "_definitions.Comparison":
-    """Compares lists recursively and returns the results as a Comparison."""
+    """Compare lists recursively and returns the results as a Comparison."""
     expected_value = expected or []
     observed_value = observed or []
 
-    if not isinstance(observed_value, list):
+    if not isinstance(observed_value, allowed_types):
         return _definitions.Comparison(
             operation="list_type",
             success=False,
@@ -54,13 +55,36 @@ class List(_definitions.Comparator):
 
     def compare(
         self,
-        observed: typing.List[typing.Any],
+        observed: typing.Union[typing.List[typing.Any], typing.Tuple[typing.Any, ...]],
         subset: bool = False,
     ) -> _definitions.Comparison:
+        """Compare the observed list in a recursive, element-wise fashion."""
         return _compare_list(
             expected=typing.cast(_types.ArbitraryList, self.value),
             observed=observed,
             subset=subset,
+        )
+
+
+class StrictList(_definitions.Comparator):
+    """
+    Container class for list comparisons, which compare the lists element-wise.
+
+    This only allows the specified list type and will fail if compared against a
+    tuple.
+    """
+
+    def compare(
+        self,
+        observed: typing.Union[typing.List[typing.Any], typing.Tuple[typing.Any, ...]],
+        subset: bool = False,
+    ) -> _definitions.Comparison:
+        """Compare the observed list in a recursive, element-wise fashion."""
+        return _compare_list(
+            expected=typing.cast(_types.ArbitraryList, self.value),
+            observed=observed,
+            subset=subset,
+            allowed_types=(list,),
         )
 
 
@@ -72,7 +96,7 @@ class JsonList(_definitions.Comparator):
         observed: str,
         subset: bool = False,
     ) -> _definitions.Comparison:
-        """Parses and compares the observed value."""
+        """Parse and compare the observed value."""
         try:
             observed_parsed = json.loads(observed or "{}")
             if not isinstance(observed_parsed, list):
@@ -94,7 +118,7 @@ class JsonList(_definitions.Comparator):
 
     @classmethod
     def _from_yaml(cls, loader: yaml.Loader, node: yaml.Node) -> "JsonList":
-        """Loads the list from a yaml parser."""
+        """Load the list from a yaml parser."""
         try:
             return cls(value=loader.construct_sequence(node, deep=True))
         except yaml.constructor.ConstructorError:
@@ -111,6 +135,11 @@ class Tuple(_definitions.Comparator):
         observed: typing.Tuple[typing.Any, ...],
         subset: bool = False,
     ) -> _definitions.Comparison:
+        """
+        Compare the observed tuple against the definition.
+
+        The comparison is carried out in a recursive, element-wise fashion.
+        """
         value = typing.cast(typing.Tuple[typing.Any, ...], self.value or tuple())
         other = observed or tuple()
 
@@ -141,9 +170,11 @@ class OkayList(List):
 
     def assert_subset(self, observed: "_types.ArbitraryList", message: str = None):
         """
-        Compares the observed object against the expected values in a recursive,
-        element-wise fashion and raises assertion errors for any deviation between
-        the elements of the expected configuration and the observed structure values.
+        Compare the observed object against the expected values.
+
+        This is carried out in a recursive, element-wise fashion and raises assertion
+        errors for any deviation between the elements of the expected configuration and
+        the observed structure values.
 
         In this subset mode, any extra keys/values found in dictionaries will be
         ignored and assumed to be insignificant. Use `assert_all` for exact matching.
@@ -163,9 +194,11 @@ class OkayList(List):
 
     def assert_all(self, observed: "_types.ArbitraryList", message: str = None):
         """
-        Compares the observed object against the expected values in a recursive,
-        element-wise fashion and raises assertion errors for any deviation between
-        the elements of the expected configuration and the observed structure values.
+        Compare the observed object against the expected values.
+
+        This is conducted in a recursive, element-wise fashion and raises assertion
+        errors for any deviation between the elements of the expected configuration and
+        the observed structure values.
 
         :param observed:
             Data structure to compare against the expected one.
@@ -182,7 +215,7 @@ class OkayList(List):
 
     @classmethod
     def _from_yaml(cls, loader: yaml.Loader, node: yaml.Node) -> "OkayList":
-        """Loads the list from a yaml parser."""
+        """Load the list from a yaml parser."""
         try:
             return cls(value=loader.construct_sequence(node, deep=True))
         except yaml.constructor.ConstructorError:
@@ -192,12 +225,13 @@ class OkayList(List):
 
     @classmethod
     def register(cls):
-        """Overrides the registration in this case for base registration."""
+        """Override the registration in this case for base registration."""
         yaml.add_constructor("!aok_list", cls.parse_yaml)
 
 
 OkayList.register()
 List.register()
+StrictList.register()
 Tuple.register()
 
 JsonList.register()

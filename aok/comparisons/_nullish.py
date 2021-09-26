@@ -9,6 +9,7 @@ class Optional(_definitions.Comparator):
     """Compares two value as an equality or allow None."""
 
     def __init__(self):
+        """Create an optional comparison object."""
         super(Optional, self).__init__(None)
 
     def _compare(
@@ -28,6 +29,7 @@ class NotNull(_definitions.Comparator):
     """Won't allow a value to be null."""
 
     def __init__(self):
+        """Create a non-null comparison object."""
         super(NotNull, self).__init__(None)
 
     def _compare(
