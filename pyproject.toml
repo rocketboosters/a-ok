@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aok"
-version = "0.3.1"
+version = "0.3.2"
 description = "Complex dictionary comparisons to simplify testing."
 authors = ["Scott Ernst <swernst@gmail.com>"]
 license = "MIT"
@@ -23,9 +23,9 @@ classifiers = [
 exclude = ["aok/tests"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
-PyYAML = "^5.3.1"
-toml = "^0.10.2"
+python = ">=3.8, <4.0"
+PyYAML = ">=5.3.1"
+toml = ">=0.10.2"
 
 [tool.poetry.dev-dependencies]
 pytest = ">=6.1.2"
@@ -36,9 +36,9 @@ flake8 = ">=3.8.4"
 flake8-black = ">=0.2.1"
 mypy = ">=0.900"
 taskipy = ">=1.4.0"
-pydocstyle = "^6.1.1"
-radon = "^5.1.0"
-yamllint = "^1.26.3"
+pydocstyle = ">=6.1.1"
+radon = ">=5.1.0"
+yamllint = ">=1.26.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
