@@ -22,8 +22,7 @@ mypy-lint:
   stage: check
   script:
   - pip install mypy
-  - mypy . --install-types --non-interactive
-  - mypy . --ignore-missing-imports
+  - mypy . --install-types --non-interactive --ignore-missing-imports
 
 radon-cc:
   image: python:3.9
